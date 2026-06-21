@@ -1,0 +1,59 @@
+---
+title: "把第二大脑变成工程系统"
+pubDate: 2026-06-22
+description: "从文件夹、标签和临时灵感出发，设计一套能够长期演进的个人知识系统。"
+tags: ["PKM", "Systems", "Workflow"]
+heroImage: "/images/hero-neural-grid.png"
+heroAlt: "A futuristic neural grid workspace background."
+---
+
+import Callout from "../../components/Callout.astro";
+
+知识管理不是把所有东西都存起来，而是让重要信息在未来能被重新调用。对于工程师来说，一个好的第二大脑应该像代码库一样：有入口、有约束、有可测试的流程。
+
+<Callout tone="cyan">
+  这篇示例文章展示 MDX 组件、Markdown 排版、Shiki 代码高亮和一键复制按钮。你可以直接复制这个文件作为新文章模板。
+</Callout>
+
+## 设计原则
+
+1. 捕获要快，整理要慢。
+2. 每条笔记都应该有明确的上下文。
+3. 结构应该服务检索，而不是服务收藏癖。
+
+## 一个可运行的笔记模型
+
+把笔记拆成四类就足够覆盖大多数工作流：
+
+- `inbox`: 临时输入，等待处理。
+- `source`: 读书、论文、网页、会议记录。
+- `concept`: 可复用概念。
+- `project`: 与实际目标绑定的执行材料。
+
+```ts
+type NoteKind = "inbox" | "source" | "concept" | "project";
+
+interface Note {
+  id: string;
+  kind: NoteKind;
+  title: string;
+  tags: string[];
+  context: string;
+  createdAt: Date;
+  links: string[];
+}
+
+export function shouldArchive(note: Note) {
+  return note.kind !== "project" && note.links.length === 0;
+}
+```
+
+## 维护节奏
+
+每周只需要做三件事：
+
+- 清空 inbox。
+- 给 source 补上下文。
+- 从 project 里提炼 concept。
+
+如果一个系统维护成本太高，它会很快变成另一个待办列表。好的系统应该降低决策成本，而不是制造新的仪式感。

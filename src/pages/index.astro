@@ -1,0 +1,142 @@
+---
+import { ArrowRight, BookOpen, RadioTower } from "@lucide/astro";
+import { getCollection } from "astro:content";
+import BentoGrid from "../components/BentoGrid.astro";
+import PostCard from "../components/PostCard.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+const featuredPosts = posts.slice(0, 3);
+---
+
+<BaseLayout
+  title="未来感个人静态博客"
+  description="Mind Anchor 是 Chance Wang 的未来感个人静态博客，使用 Astro、Tailwind CSS、GSAP、MDX 与 View Transitions 构建。"
+  image="/images/hero-neural-grid.png"
+>
+  <section class="relative min-h-[78svh] overflow-hidden md:min-h-[82svh]" data-home>
+    <div class="absolute inset-0 -z-20">
+      <img
+        class="h-full w-full object-cover"
+        src="/images/hero-neural-grid.png"
+        alt=""
+        loading="eager"
+        decoding="async"
+      />
+    </div>
+    <div class="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(5,7,12,0.94),rgba(5,7,12,0.62)_44%,rgba(5,7,12,0.18)),linear-gradient(180deg,rgba(5,7,12,0.28),rgba(5,7,12,0.82))]"></div>
+    <div class="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-300/70 to-transparent"></div>
+    <div class="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-cyan-300/10 to-transparent"></div>
+
+    <div class="site-container flex min-h-[78svh] items-center pb-12 pt-16 md:min-h-[82svh] md:pt-20">
+      <div class="max-w-3xl">
+        <p
+          class="mb-5 inline-flex items-center gap-3 rounded-lg border border-cyan-300/25 bg-cyan-300/10 px-3 py-2 font-mono text-xs uppercase tracking-[0.28em] text-cyan-100 backdrop-blur"
+          data-hero-animate
+        >
+          <RadioTower class="size-4" aria-hidden="true" />
+          Chance Zone // Mind Anchor
+        </p>
+        <h1
+          class="text-balance font-display text-5xl font-semibold tracking-tight text-white sm:text-6xl lg:text-7xl"
+          data-hero-animate
+        >
+          把想法锚定成可运行的系统。
+        </h1>
+        <p class="mt-6 max-w-2xl text-lg leading-8 text-slate-200 md:text-xl" data-hero-animate>
+          一个极客风个人主页与静态博客模板：写作使用 Markdown/MDX，视觉层使用 Tailwind 与 GSAP，路由切换交给 Astro View Transitions。
+        </p>
+        <div class="mt-8 flex flex-wrap gap-3" data-hero-animate>
+          <a
+            class="inline-flex items-center gap-2 rounded-lg bg-cyan-300 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200 focus:outline-none focus:ring-2 focus:ring-cyan-200"
+            href="/blog"
+          >
+            <BookOpen class="size-4" aria-hidden="true" />
+            阅读文章
+          </a>
+          <a
+            class="inline-flex items-center gap-2 rounded-lg border border-white/20 bg-white/10 px-5 py-3 text-sm font-semibold text-white backdrop-blur transition hover:border-emerald-300/60 hover:text-emerald-100 focus:outline-none focus:ring-2 focus:ring-emerald-200"
+            href="#lab"
+          >
+            探索 Bento
+            <ArrowRight class="size-4" aria-hidden="true" />
+          </a>
+        </div>
+
+        <div class="mt-10 grid max-w-2xl grid-cols-3 gap-3" data-hero-animate>
+          <div class="rounded-lg border border-white/15 bg-white/10 p-4 backdrop-blur">
+            <p class="font-display text-2xl font-semibold text-white">Astro</p>
+            <p class="mt-1 text-xs text-slate-300">Static-first</p>
+          </div>
+          <div class="rounded-lg border border-white/15 bg-white/10 p-4 backdrop-blur">
+            <p class="font-display text-2xl font-semibold text-white">MDX</p>
+            <p class="mt-1 text-xs text-slate-300">Content-ready</p>
+          </div>
+          <div class="rounded-lg border border-white/15 bg-white/10 p-4 backdrop-blur">
+            <p class="font-display text-2xl font-semibold text-white">GSAP</p>
+            <p class="mt-1 text-xs text-slate-300">Micro-motion</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <BentoGrid posts={featuredPosts} />
+
+  <section class="site-container pb-16 md:pb-24">
+    <div class="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+      <div>
+        <p class="font-mono text-xs uppercase tracking-[0.28em] text-cyan-700 dark:text-cyan-300">
+          Latest Writing
+        </p>
+        <h2 class="mt-3 font-display text-3xl font-semibold tracking-tight text-slate-950 dark:text-white md:text-4xl">
+          最近发布
+        </h2>
+      </div>
+      <a
+        class="inline-flex items-center gap-2 text-sm font-semibold text-cyan-700 transition hover:text-cyan-900 dark:text-cyan-300 dark:hover:text-cyan-100"
+        href="/blog"
+      >
+        查看全部
+        <ArrowRight class="size-4" aria-hidden="true" />
+      </a>
+    </div>
+    <div class="grid gap-4 md:grid-cols-3">
+      {featuredPosts.map((post) => <PostCard post={post} featured />)}
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  import { gsap } from "gsap";
+
+  const animateHome = () => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const root = document.querySelector<HTMLElement>("[data-home]");
+    if (!root || root.dataset.animated === "true") return;
+    root.dataset.animated = "true";
+
+    gsap
+      .timeline({ defaults: { ease: "power3.out" } })
+      .from("[data-hero-animate]", {
+        opacity: 0,
+        y: 28,
+        duration: 0.78,
+        stagger: 0.09,
+      })
+      .from(
+        ".site-container img",
+        {
+          opacity: 0,
+          scale: 1.04,
+          duration: 0.8,
+        },
+        0,
+      );
+  };
+
+  document.addEventListener("astro:page-load", animateHome);
+  animateHome();
+</script>

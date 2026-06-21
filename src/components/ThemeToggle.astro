@@ -1,0 +1,52 @@
+---
+import { Moon, Sun } from "@lucide/astro";
+---
+
+<button
+  id="theme-toggle"
+  class="inline-grid size-10 place-items-center rounded-lg border border-slate-900/10 bg-white/70 text-slate-700 shadow-sm shadow-slate-900/5 backdrop-blur transition hover:border-cyan-500/50 hover:text-cyan-700 focus:outline-none focus:ring-2 focus:ring-cyan-400 dark:border-white/10 dark:bg-slate-950/50 dark:text-slate-200 dark:hover:text-cyan-200"
+  type="button"
+  aria-label="切换暗黑模式"
+  title="切换暗黑模式"
+>
+  <Sun class="size-4 dark:hidden" aria-hidden="true" />
+  <Moon class="hidden size-4 dark:block" aria-hidden="true" />
+</button>
+
+<script>
+  const themeStorageKey = "mind-anchor-theme";
+
+  const getPreferredTheme = () => {
+    const stored = localStorage.getItem(themeStorageKey);
+    if (stored === "light" || stored === "dark") return stored;
+    return window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark"
+      : "light";
+  };
+
+  const applyTheme = (theme: "light" | "dark") => {
+    document.documentElement.classList.toggle("dark", theme === "dark");
+    localStorage.setItem(themeStorageKey, theme);
+    document
+      .querySelector("#theme-toggle")
+      ?.setAttribute("aria-pressed", String(theme === "dark"));
+  };
+
+  const bindThemeToggle = () => {
+    const toggle = document.querySelector<HTMLButtonElement>("#theme-toggle");
+    if (!toggle || toggle.dataset.bound === "true") return;
+
+    toggle.dataset.bound = "true";
+    toggle.addEventListener("click", () => {
+      const next = document.documentElement.classList.contains("dark")
+        ? "light"
+        : "dark";
+      applyTheme(next);
+    });
+
+    applyTheme(getPreferredTheme());
+  };
+
+  document.addEventListener("astro:page-load", bindThemeToggle);
+  bindThemeToggle();
+</script>

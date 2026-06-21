@@ -1,0 +1,32 @@
+{
+  "name": "mind-anchor",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "ASTRO_TELEMETRY_DISABLED=1 astro dev",
+    "build": "ASTRO_TELEMETRY_DISABLED=1 astro check && ASTRO_TELEMETRY_DISABLED=1 astro build",
+    "preview": "ASTRO_TELEMETRY_DISABLED=1 astro preview",
+    "check": "ASTRO_TELEMETRY_DISABLED=1 astro check",
+    "astro": "ASTRO_TELEMETRY_DISABLED=1 astro"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "latest",
+    "@astrojs/rss": "latest",
+    "@astrojs/sitemap": "latest",
+    "@lucide/astro": "latest",
+    "@tailwindcss/typography": "latest",
+    "astro": "latest",
+    "gsap": "latest",
+    "tailwindcss": "^3.4.17"
+  },
+  "devDependencies": {
+    "@astrojs/check": "latest",
+    "autoprefixer": "latest",
+    "postcss": "latest",
+    "typescript": "latest"
+  },
+  "overrides": {
+    "vite": "^7"
+  }
+}

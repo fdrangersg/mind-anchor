@@ -1,0 +1,35 @@
+---
+import { getCollection } from "astro:content";
+import PostCard from "../../components/PostCard.astro";
+import TagPill from "../../components/TagPill.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+const tags = Array.from(new Set(posts.flatMap((post) => post.data.tags))).sort();
+---
+
+<BaseLayout title="Writing" description="Mind Anchor 的全部文章归档，涵盖前端架构、AI 工作流、系统设计与个人知识管理。">
+  <section class="site-container py-14 md:py-20">
+    <div class="max-w-3xl">
+      <p class="font-mono text-xs uppercase tracking-[0.28em] text-cyan-700 dark:text-cyan-300">
+        Archive
+      </p>
+      <h1 class="mt-4 font-display text-4xl font-semibold tracking-tight text-slate-950 dark:text-white md:text-6xl">
+        Writing
+      </h1>
+      <p class="mt-5 text-lg leading-8 text-slate-600 dark:text-slate-300">
+        用 Markdown/MDX 管理内容，用 Content Collections 约束 frontmatter，用静态生成保持极高性能。
+      </p>
+    </div>
+
+    <div class="mt-8 flex flex-wrap gap-2">
+      {tags.map((tag) => <TagPill tag={tag} />)}
+    </div>
+
+    <div class="mt-10 grid gap-4 md:grid-cols-2">
+      {posts.map((post) => <PostCard post={post} />)}
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,124 @@
+---
+import { ClientRouter } from "astro:transitions";
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import { SITE } from "../consts";
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  type?: "website" | "article";
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description = SITE.description,
+  image = SITE.ogImage,
+  type = "website",
+  noindex = false,
+} = Astro.props;
+
+const pageTitle = title ? `${title} | ${SITE.title}` : `${SITE.title} | ${SITE.tagline}`;
+const canonical = new URL(Astro.url.pathname, SITE.url).toString();
+const ogImage = new URL(image, SITE.url).toString();
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": type === "article" ? "Article" : "WebSite",
+  name: pageTitle,
+  description,
+  url: canonical,
+  image: ogImage,
+  author: {
+    "@type": "Person",
+    name: SITE.author,
+    url: SITE.url,
+  },
+};
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#05070c" />
+    <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex,nofollow" />}
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <meta property="og:site_name" content={SITE.title} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content={type} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content={SITE.locale} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <script is:inline>
+      (() => {
+        const key = "mind-anchor-theme";
+        const stored = localStorage.getItem(key);
+        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        const theme = stored === "light" || stored === "dark" ? stored : prefersDark ? "dark" : "light";
+        document.documentElement.classList.toggle("dark", theme === "dark");
+      })();
+    </script>
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <title>{pageTitle}</title>
+    <ClientRouter />
+  </head>
+  <body class="relative bg-slate-50 text-slate-950 dark:bg-ink-950 dark:text-slate-100">
+    <div class="pointer-events-none fixed inset-0 -z-10 bg-radial-grid opacity-80 dark:opacity-100"></div>
+    <Header />
+    <main id="main-content" class="relative z-10">
+      <slot />
+    </main>
+    <Footer />
+
+    <script>
+      const copyIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>`;
+      const checkIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>`;
+
+      const enhanceCodeBlocks = () => {
+        document.querySelectorAll<HTMLPreElement>("pre").forEach((pre) => {
+          if (pre.dataset.copyEnhanced === "true") return;
+          const code = pre.querySelector("code");
+          if (!code) return;
+
+          pre.dataset.copyEnhanced = "true";
+          const button = document.createElement("button");
+          button.className = "copy-code-button";
+          button.type = "button";
+          button.title = "复制代码";
+          button.setAttribute("aria-label", "复制代码");
+          button.innerHTML = copyIcon;
+
+          button.addEventListener("click", async () => {
+            await navigator.clipboard.writeText(code.textContent ?? "");
+            button.dataset.copied = "true";
+            button.innerHTML = checkIcon;
+            window.setTimeout(() => {
+              button.dataset.copied = "false";
+              button.innerHTML = copyIcon;
+            }, 1400);
+          });
+
+          pre.append(button);
+        });
+      };
+
+      document.addEventListener("astro:page-load", enhanceCodeBlocks);
+      enhanceCodeBlocks();
+    </script>
+  </body>
+</html>

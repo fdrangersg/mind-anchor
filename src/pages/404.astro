@@ -1,0 +1,25 @@
+---
+import { ArrowLeft } from "@lucide/astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Not Found" description="这个页面不存在。" noindex>
+  <section class="site-container flex min-h-[68svh] flex-col items-start justify-center py-16">
+    <p class="font-mono text-xs uppercase tracking-[0.28em] text-cyan-700 dark:text-cyan-300">
+      404
+    </p>
+    <h1 class="mt-4 font-display text-5xl font-semibold tracking-tight text-slate-950 dark:text-white">
+      信号丢失
+    </h1>
+    <p class="mt-5 max-w-xl text-lg leading-8 text-slate-600 dark:text-slate-300">
+      你访问的页面暂时没有锚点。回到首页或文章归档可以重新导航。
+    </p>
+    <a
+      class="mt-8 inline-flex items-center gap-2 rounded-lg bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-cyan-700 dark:bg-white dark:text-slate-950 dark:hover:bg-cyan-200"
+      href="/"
+    >
+      <ArrowLeft class="size-4" aria-hidden="true" />
+      返回首页
+    </a>
+  </section>
+</BaseLayout>

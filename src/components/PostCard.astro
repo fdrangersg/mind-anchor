@@ -1,0 +1,46 @@
+---
+import { ArrowUpRight, CalendarDays } from "@lucide/astro";
+import type { CollectionEntry } from "astro:content";
+import FormattedDate from "./FormattedDate.astro";
+import TagPill from "./TagPill.astro";
+
+interface Props {
+  post: CollectionEntry<"blog">;
+  featured?: boolean;
+}
+
+const { post, featured = false } = Astro.props;
+const slug =
+  "slug" in post
+    ? post.slug
+    : post.id.replace(/\.(md|mdx)$/i, "");
+---
+
+<article
+  class:list={[
+    "group relative overflow-hidden rounded-lg border border-slate-900/10 bg-white/74 p-5 shadow-sm shadow-slate-900/5 transition hover:-translate-y-1 hover:border-cyan-500/40 hover:shadow-glow dark:border-white/10 dark:bg-slate-950/54",
+    featured && "md:p-6",
+  ]}
+>
+  <a class="absolute inset-0 z-10" href={`/blog/${slug}`} aria-label={post.data.title}></a>
+  <div class="relative z-20 flex h-full flex-col gap-4">
+    <div class="flex items-center justify-between gap-4 text-xs text-slate-500 dark:text-slate-400">
+      <span class="inline-flex items-center gap-2">
+        <CalendarDays class="size-3.5" aria-hidden="true" />
+        <FormattedDate date={post.data.pubDate} />
+      </span>
+      <ArrowUpRight class="size-4 text-slate-400 transition group-hover:text-cyan-500" aria-hidden="true" />
+    </div>
+    <div class="space-y-2">
+      <h3 class:list={["font-display font-semibold text-slate-950 dark:text-white", featured ? "text-2xl" : "text-xl"]}>
+        {post.data.title}
+      </h3>
+      <p class="line-clamp-3 text-sm leading-6 text-slate-600 dark:text-slate-300">
+        {post.data.description}
+      </p>
+    </div>
+    <div class="mt-auto flex flex-wrap gap-2">
+      {post.data.tags.slice(0, 3).map((tag) => <TagPill tag={tag} />)}
+    </div>
+  </div>
+</article>
