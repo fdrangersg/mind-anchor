@@ -1,16 +1,15 @@
 export const SITE = {
   title: "Mind Anchor",
-  tagline: "Chance Zone 的数字花园",
+  tagline: "Chance Zone",
   description:
-    "Chance Wang 的个人静态博客，记录现代前端、AI-native engineering、系统设计与高质量创作工作流。",
+    "A personal blog about whatever keeps my attention: ideas, books, music, software, life, and the strange paths between them.",
   url: "https://chancezone.net",
-  author: "Chance Wang",
-  locale: "zh_CN",
+  author: "fdranger",
+  locale: "en_US",
   ogImage: "/images/hero-neural-grid.png",
 };
 
 export const NAV_LINKS = [
   { href: "/", label: "Home" },
   { href: "/blog", label: "Writing" },
-  { href: "/#lab", label: "Lab" },
 ];

@@ -6,7 +6,7 @@ import ThemeToggle from "./ThemeToggle.astro";
 
 <header class="sticky top-0 z-50 border-b border-slate-900/10 bg-white/70 backdrop-blur-xl dark:border-white/10 dark:bg-slate-950/60">
   <nav class="site-container flex h-16 items-center justify-between gap-4" aria-label="Primary">
-    <a class="group inline-flex items-center gap-3" href="/" aria-label={`${SITE.title} 首页`}>
+    <a class="group inline-flex items-center gap-3" href="/" aria-label={`${SITE.title} home`}>
       <span class="relative grid size-9 place-items-center overflow-hidden rounded-lg border border-cyan-500/30 bg-slate-950 text-cyan-200 shadow-glow">
         <span class="absolute inset-0 bg-[radial-gradient(circle_at_50%_35%,rgba(124,255,178,0.28),transparent_45%)]"></span>
         <span class="relative font-mono text-sm font-bold">MA</span>
@@ -15,7 +15,7 @@ import ThemeToggle from "./ThemeToggle.astro";
         <span class="block font-display text-sm font-semibold tracking-[0.18em] text-slate-950 dark:text-white">
           {SITE.title}
         </span>
-        <span class="block text-xs text-slate-500 dark:text-slate-400">chancezone.net</span>
+        <span class="block text-xs text-slate-500 dark:text-slate-400">{SITE.tagline}</span>
       </span>
     </a>
 
@@ -41,7 +41,7 @@ import ThemeToggle from "./ThemeToggle.astro";
       </a>
       <a
         class="hidden size-10 place-items-center rounded-lg border border-slate-900/10 bg-white/70 text-slate-700 shadow-sm shadow-slate-900/5 transition hover:border-cyan-500/50 hover:text-cyan-700 dark:border-white/10 dark:bg-slate-950/50 dark:text-slate-200 dark:hover:text-cyan-200 sm:inline-grid"
-        href="https://github.com/chancewang"
+        href="https://github.com/fdrangersg"
         aria-label="GitHub"
         title="GitHub"
       >

@@ -10,7 +10,7 @@ const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
 const tags = Array.from(new Set(posts.flatMap((post) => post.data.tags))).sort();
 ---
 
-<BaseLayout title="Writing" description="Mind Anchor 的全部文章归档，涵盖前端架构、AI 工作流、系统设计与个人知识管理。">
+<BaseLayout title="Writing" description="All published notes from Mind Anchor.">
   <section class="site-container py-14 md:py-20">
     <div class="max-w-3xl">
       <p class="font-mono text-xs uppercase tracking-[0.28em] text-cyan-700 dark:text-cyan-300">
@@ -20,16 +20,29 @@ const tags = Array.from(new Set(posts.flatMap((post) => post.data.tags))).sort()
         Writing
       </h1>
       <p class="mt-5 text-lg leading-8 text-slate-600 dark:text-slate-300">
-        用 Markdown/MDX 管理内容，用 Content Collections 约束 frontmatter，用静态生成保持极高性能。
+        Essays, notes, logs, and loose observations across whatever I happen to care about.
       </p>
     </div>
 
-    <div class="mt-8 flex flex-wrap gap-2">
-      {tags.map((tag) => <TagPill tag={tag} />)}
-    </div>
+    {tags.length > 0 && (
+      <div class="mt-8 flex flex-wrap gap-2">
+        {tags.map((tag) => <TagPill tag={tag} />)}
+      </div>
+    )}
 
-    <div class="mt-10 grid gap-4 md:grid-cols-2">
-      {posts.map((post) => <PostCard post={post} />)}
-    </div>
+    {posts.length > 0 ? (
+      <div class="mt-10 grid gap-4 md:grid-cols-2">
+        {posts.map((post) => <PostCard post={post} />)}
+      </div>
+    ) : (
+      <div class="mt-10 rounded-lg border border-slate-900/10 bg-white/70 p-6 text-slate-600 shadow-sm shadow-slate-900/5 dark:border-white/10 dark:bg-slate-950/50 dark:text-slate-300">
+        <p class="font-display text-2xl font-semibold text-slate-950 dark:text-white">
+          The archive is empty for now.
+        </p>
+        <p class="mt-3 max-w-2xl leading-7">
+          Add Markdown or MDX files to <code>src/content/blog/</code>, and they will appear here automatically after the next build.
+        </p>
+      </div>
+    )}
   </section>
 </BaseLayout>

@@ -17,7 +17,6 @@
     "@lucide/astro": "latest",
     "@tailwindcss/typography": "latest",
     "astro": "latest",
-    "gsap": "latest",
     "tailwindcss": "^3.4.17"
   },
   "devDependencies": {
