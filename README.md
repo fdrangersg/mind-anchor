@@ -22,7 +22,17 @@ The local preview runs at `http://localhost:4321` by default.
 
 ## Writing
 
-Posts live in `src/content/blog/`. Create a `.md` or `.mdx` file with frontmatter like this:
+Posts live in `src/content/blog/`. Top-level folders become navigation categories:
+
+```text
+src/content/blog/books/the-left-hand-of-darkness.md
+src/content/blog/music/a-record-that-stayed.md
+src/content/blog/life/walking-through-rain.md
+```
+
+Those folders render as nav links: `Books`, `Music`, `Life`.
+
+Create a `.md` or `.mdx` file with frontmatter like this:
 
 ```yaml
 title: "Post title"

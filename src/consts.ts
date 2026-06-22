@@ -8,8 +8,3 @@ export const SITE = {
   locale: "en_US",
   ogImage: "/images/hero-neural-grid.png",
 };
-
-export const NAV_LINKS = [
-  { href: "/", label: "Home" },
-  { href: "/blog", label: "Writing" },
-];
